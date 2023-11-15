@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-height, initial-scale=1.0, 
+user-scalable=no">
+    <title>Emscripten-Generated Code</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>C Calculator</h1>
+      <div class="input-text">
+        <h2 id="input-text"></h2>
+      </div>
+      <div class="button-container">
+        <div></div>
+        <div></div>
+        <div class="button button-arithmetic" onclick="addCharacter(' ^ ')">
+          <p>^</p>
+        </div>
+        <div class="button button-arithmetic" onclick="clearInput()">
+          <p>AC</p>
+        </div>
+        <div class="button button-number" onclick="addCharacter('7')">
+          <p>7</p>
+        </div>
+        <div class="button button-number" onclick="addCharacter('8')">
+          <p>8</p>
+        </div>
+        <div class="button button-number" onclick="addCharacter('9')">
+          <p>9</p>
+        </div>
+        <div class="button button-arithmetic" onclick="addCharacter(' / ')">
+          <p>/</p>
+        </div>
+        <div class="button button-number" onclick="addCharacter('4')">
+          <p>4</p>
+        </div>
+        <div class="button button-number" onclick="addCharacter('5')">
+          <p>5</p>
+        </div>
+        <div class="button button-number" onclick="addCharacter('6')">
+          <p>6</p>
+        </div>
+        <div class="button button-arithmetic" onclick="addCharacter(' * ')">
+          <p>*</p>
+        </div>
+        <div class="button button-number" onclick="addCharacter('1')">
+          <p>1</p>
+        </div>
+        <div class="button button-number" onclick="addCharacter('2')">
+          <p>2</p>
+        </div>
+        <div class="button button-number" onclick="addCharacter('3')">
+          <p>3</p>
+        </div>
+        <div class="button button-arithmetic" onclick="addCharacter(' - ')">
+          <p>-</p>
+        </div>
+        <div class="button button-number" onclick="addCharacter('0')">
+          <p>0</p>
+        </div>
+        <div class="button button-number" onclick="addCharacter('.')">
+          <p>.</p>
+        </div>
+        <div class="button button-solve" onclick="calculate()">
+          <p>=</p>
+        </div>
+        <div class="button button-arithmetic" onclick="addCharacter(' + ')">
+          <p>+</p>
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <div class="footer">
+        ©Snekussaurier 2023
+      </div>
+    </div>
+    <script type='text/javascript'>
+      let input = "";
+
+      function addCharacter(char) {
+          input += char;
+          document.getElementById('input-text').innerText = input;
+      }
+
+      function clearInput() {
+        input = '';
+        document.getElementById('input-text').innerText = input;
+      }
+
+      function add(a, b) {
+        const result = Module.ccall(
+          'add',
+          'number', // return type
+          ['number', 'number'], // argument types
+          [a, b] // arguments
+        );
+        return result;
+      }
+
+      function subtract(a, b) {
+        const result = Module.ccall(
+          'subtract',
+          'number', // return type
+          ['number', 'number'], // argument types
+          [a, b] // arguments
+        );
+        return result;
+      }
+
+      function multiply(a, b) {
+        const result = Module.ccall(
+          'multiply',
+          'number', // return type
+          ['number', 'number'], // argument types
+          [a, b] // arguments
+        );
+        return result;
+      }
+
+      function divide(a, b) {
+        const result = Module.ccall(
+          'divide',
+          'number', // return type
+          ['number', 'number'], // argument types
+          [a, b] // arguments
+        );
+        return result;
+      }
+
+      function power(a, b) {
+        const result = Module.ccall(
+          'power',
+          'number', // return type
+          ['number', 'number'], // argument types
+          [a, b] // arguments
+        );
+        return result;
+      }
+
+
+      function calculate(){
+        let inputArray = input.split(" ");
+        
+        let a = inputArray[0];
+        let b = inputArray[2];
+        let operator = inputArray[1];
+
+        let result = 0;
+
+        switch(operator) {
+          case '+':
+            result = add(a, b);
+            break;
+          case '-':
+            result = subtract(a, b);
+            break;
+          case '*':
+            result = multiply(a, b);
+            break;
+          case '/':
+            result = divide(a, b);
+            break;
+          case '^':
+            result = power(a, b);
+            break;
+          default:
+            console.log('Invalid operator');
+        }
+        input = result.toString();
+        document.getElementById('input-text').innerText = input;
+      }
+    </script>
+    <script async type="text/javascript" src="calculator.js"></script>
+  </body>
+</html>
